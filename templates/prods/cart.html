@@ -1,0 +1,202 @@
+{% extends 'prods/base.html'%}
+{% load static%}
+{% block title%}your cart{% endblock%}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col col-md-10 mx-auto">
+            <h2 class="my-3 text-center">Details about your cart</h2>
+            <h4 class="empty text-center"></h4>
+            {% if not items %}
+            <h4 class="text-center">No items In Your Cart Yet</h4>
+            {% else %}
+            <div class="hideTable">
+            <table class="table table-striped .table-responsive-md ">
+              <thead>
+                <tr>  <th scope="col" class="text-center"># Cart Id</th>
+                      <th scope="col" class="text-center" ># Item Id</th>
+                      <th scope="col" class="text-center w-25" >Product</th>
+                      <th scope="col" class="text-center w-25" >Edit Quantaty</th>
+                      <th scope="col" class="text-center w-25">Price per 1 st</th>
+                      <th scope="col" class="text-center">Remove</th>
+                      <th scope="col" class="text-center" >Sub-Total</th>
+                      <th scope="col" class="text-right" colspan="2">Total Items</th>
+                      <th scope="col" class="text-center" ></th>
+                      <th scope="col" class="text-right" colspan="2">Total Price</th>
+                      <th scope="col" class="text-center" ></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      {% for item in items %}
+                    <tr class="on-move-{{item.product_id}}">
+                      <th scope="row" class="text-center">{{cart.id}}</th>
+                      <th scope="row" class="text-center">{{item.id}}</th>
+                      <td class="text-center" > <a href="{% url 'prods:prod-view' item.product_id %}">{{item.product}}</a></td>
+                      <td class="text-center" >
+                      <div class="form-group">
+                          <form class="form-cart-change-items form-inline my-2 my-lg-2 px-2"
+                                data-id={{item.id}}
+                               action="{% url 'prods:edit-cart-items' item.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="number" id="quantity" name="qty"
+                                        class="form-control input-number text-center"
+                                        value="{{item.qty}}"
+                                        min="1"
+                                        max="100"
+                                        style="width:80px;"
+                                        >
+                                    <button type="submit" class="btn btn-rounded btn-success btn-sm">Edit</button>
+                               </form>
+                          </div>
+                        </td>
+                      <!-- <td class="text-center"></td>
+                      <td class="text-center"></td> -->
+                      <td class="text-center">${{item.product.price}}</td>
+                      <!-- <td class="text-center">item.qty}} pieces</td> -->
+                      <td class="text-center">
+                      <a class="remove-item"
+                      data-id='{{item.product_id}}'
+                      href="{% url 'prods:delete-cart-item' item.id %}"><img src="{% static 'images/trash.svg' %}" alt="basket">
+                      </a>
+                      </td>
+                        <td class="itemSubTotal-{{item.id}} text-center">${{item.sub_total}}
+                        </td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td></td><td></td><td></td><td></td><td></td>
+                        <td class=""></td>
+                        <td></td>
+                        <!-- w-25 -->
+                        <td class="text-right"  colspan="2"  id="totalItemsInCart">Items In Total: {{qty}}</td>
+
+                        <!-- w-25 -->
+                        <td class="text-right" colspan="3" id="totalPriceCart">Total Price (shipping excl) $ {{total_cart}}</td>
+
+                    </tr>
+                    <tr id="show-proceed">
+                    {% if user.is_authenticated%}
+                    <td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td>
+                            <td class="text-center">
+                            <form action="{% url 'orders:create-order' %}"  method="POST">
+                            {% csrf_token %}
+                            <input type="number" name="pk"
+                                     value="{{cart.id}}"                                         hidden >
+                            <input type="submit" value="Make Order"
+                                class="btn btn-success">
+                                </form>
+                            </td>
+                            <td></td>
+                            <td></td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td></td><td></td><td></td><td></td>
+
+                        <td colspan="3">To Make an Order You Need to LogIn or SignUp</td>
+                        <td class="text-center"><button class="btn custom-success-btn"><a href="/accounts/signup/">SignUp</a></button></td>
+                        <td class="text-center">
+                            <button class="btn custom-success-btn">
+                                <a href="/accounts/login/">Log In</a>
+                            </button>
+                        </td>
+
+                    </tr>
+
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+    </div> <!--end div row-->
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    var cart_total = $("#cart_total");
+    $(".form-cart-change-items").on('submit',function(e){
+        e.preventDefault(e);
+        var dataAttr=$(this).attr('data-id');
+        var totalPriceCart = $("#totalPriceCart");
+        var totalItemsInCart = $("#totalItemsInCart");
+        $.ajax({
+                url:$(this).attr('action'),
+                data:$(this).serialize(),
+                type:$(this).attr("method"),
+                success:function(response){
+                    totalPriceCart.text('Total Price (shipping excl): ' + response.cartTotalPrice ),
+                    totalItemsInCart.text('Items In Total: '+ response.totalItemsInCart),
+                    $(".itemSubTotal-"+ dataAttr).html(response.itemSubTotal),
+                    cart_total.html(response.totalItemsInCart)
+
+                },
+                error: function(err){
+                  console.log('error',err);
+              }
+
+       }) //end ajax
+    }); //end $form-cart-change-items
+</script>
+<script type="text/javascript">
+    var cart_total = $("#cart_total");
+    $(".remove-item").on('click',function(e){
+        e.preventDefault();
+        var hideTable =$(".hideTable")
+        var totalPriceCart = $("#totalPriceCart");
+        var totalItemsInCart = $("#totalItemsInCart");
+        url = $(this).attr('href');
+        var removeId=$(this).attr('data-id');
+        $.ajax({
+            url:url,
+            type:"GET",
+            success:function(response){
+                //console.log('greet from delete')
+                $(".on-move-"+ removeId).css('display','none')
+                totalPriceCart.text('Total Price (shipping excl): '+ response.cartTotalPrice)
+                totalItemsInCart.text('Items In Total: '+ response.totalItemsInCart)
+                cart_total.html(response.totalItemsInCart)
+                if(parseInt(response.totalItemsInCart)==0){
+                    hideTable.css('display','none'),
+                    cart_total.html(response.totalItemsInCart),
+                    $(".empty").html("Your Cart is empty")
+                }
+            },
+            error: function(err){
+              console.log('error',err)
+          }
+        })
+    })
+</script>
+<script type="text/javascript">
+    var proceed = $("#proceed");
+    var showAuth = $(".show-auth");
+    $(".showAuth").on('submit',function(e){
+        console.log("smb wants to login-signup=> but clicked");
+        e.preventDefault();
+        url = $(this).attr('href');
+        $.ajax({
+            url:url,
+            type:"POST",
+            success:function(response){
+                //show button Proceed
+                //console.log(response);
+                window.location ="{% url 'prods:cart' %}"
+                console.log("success coming");
+                showAuth.css('display','none');
+                console.log("block auth but is disappeared")
+            },
+            error:function(err){
+                console.log('error',err);
+            }
+        })//end ajax
+    })//end on click
+</script>
+{% endblock js%}

@@ -1,0 +1,88 @@
+
+{% extends 'base.html'%}
+{% load staticfiles %}
+{% load bootstrap4 %}
+{% block content %}
+<div class="container-fluid">
+    {% include 'extra/msg.html'%}
+
+ <table class="table table-hover">
+     <h3 class="text-center">Detailed Info About Your Purchase</h3>
+    <caption> <i class='fas fa-info-circle'></i> - price per one piece <br>
+        <i class='fas fa-info-circle' style='color:green;'></i> Total for all pieces of this product exclusive cost of shipping
+    </caption>
+    <thead class="thead-light">
+      <tr>
+        <th scope="col" class="text-center">Product</th>
+        <th scope="col" class="text-center">Price  <i class='fas fa-info-circle'></i></th>
+        <th scope="col" class="text-center">Amount of pieces</th>
+        <th scope="col" class="text-center">Sub Total  <i class='fas fa-info-circle' style='color:green '></i></th>
+        <th scope="col" class="text-center"></th>
+        <th scope="col" class="text-center"></th>
+        <th scope="col" class="text-center"></th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for item in cart_items %}
+      <tr>
+        <th scope="row" class="text-center">{{item.product}}</th>
+        <td scope="row" class="text-center">{{item.product.price}}</td>
+        <td scope="row" class="text-center">{{item.qty}}</td>
+        <td scope="row" class="text-center">${{item.sub_total}}</td>
+        <td scope="row" class="text-center"></td>
+        <td scope="row" class="text-center"></td>
+        <td scope="row" class="text-center"></td>
+      </tr>
+      {% endfor %}
+      <tr>
+          <td class="text-center">Final calculation</td><td></td><td></td><td></td><td></td>
+          <td class="text-center">Items In Total: {{amount}}</td>
+          <td class="text-center" >Total Price (shipping excl) $ {{total_cart}}</td>
+      </tr>
+
+    </tbody>
+  </table>
+  <hr>
+  <table class="table table-hover">
+      <caption>
+          <i class='fas fa-info-circle' style='color:green;'></i> Total inclusive cost of shipping
+      </caption>
+      <thead>
+        <tr class="table-secondary">
+              <th scope="col" class="text-center">Order</th>
+              <th scope="col" class="text-center">Customer email</th>
+              <th scope="col" class="text-center">Customer address</th>
+
+              <th scope="col" class="text-center">Amount of pieces</th>
+              <th scope="col" class="text-center">Amount of products</th>
+              <th scope="col" class="text-center">Order Status</th>
+              <th scope="col" class="text-center">Order Created</th>
+              <th scope="col" class="text-center">Shipping Cost</th>
+              <th scope="col" class="text-center">SubTotal</th>
+              <th scope="col" class="text-center">BTW 6%</th>
+              <th scope="col" class="text-center">BTW </th>
+              <th scope="col" class="text-center">Total <i class='fas fa-info-circle' style='color:green;'></th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr>
+              <td class="text-center">{{order.order_unid}}</td>
+              <td class="text-center">{{user.email}}</td>
+              <td class="text-center">{{user.profile.postcode}}</td>
+              <td class="text-center">{{amount}}</td>
+              <td class="text-center">{{cart_items.count}}</td>
+              <td class="text-center">{{order.status}}</td>
+              <td class="text-center">{{order.date|date:"d-m-Y, H:i"}}</td>
+              <td class="text-center">{{order.shipping_total}}</td>
+              <td class="text-center">{{total_cart}}</td>
+              <td class="text-center">....</td>
+              <td class="text-center">....</td>
+              <td class="text-center">{{order.total}}</td>
+
+          </tr>
+      </tbody>
+  </table>
+</div>
+
+
+{% endblock %}

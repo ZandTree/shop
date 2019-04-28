@@ -1,0 +1,50 @@
+{% extends 'prods/base.html' %}
+{% load staticfiles %}
+{% load bootstrap4 %}
+{% block title %}Search Page{% endblock title %}
+
+{% block sidebar%}
+    {% include 'prods/sidebar.html'%}
+{% endblock sidebar %}
+
+{% block product %}
+<div class="col-md-10 col-md-push-2">
+    <div class="container ">
+        <div class="row mt-3">
+            {% if request.GET.q %}
+            <div class="col-12 mb-3 mt-3">
+                Results for <strong>{{request.GET.q}}</strong>
+                <hr>
+            </div>
+            {% endif %}
+        </div>
+        <!-- div= row cards -->
+        <div class="row">
+            {% for prod in products %}
+            <div class="col-md-4 py-3">
+                {{forloop.counter}}
+                {% include 'extra/prod_card.html' with prod=prod %}
+            </div>
+            {% endfor %}
+
+        </div>
+        <hr>
+        <div class="row">
+            {% bootstrap_pagination page_obj %}
+        </div>
+        <!-- <div class="row"><!-- div pagination
+            <div class="col-md-12">
+                <ul class="pagination">
+                    <li class="disabled"><a href="#">&laquo;</a></li>
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">&raquo;</a></li>
+                </ul>
+            </div>
+        </div>end div pagination -->
+    </div>
+</div>
+
+{% endblock %}

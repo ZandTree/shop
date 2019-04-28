@@ -1,0 +1,15 @@
+<div class="card">
+        <!-- <img src="{{product.photo.url}}" alt="ku-ku"> -->
+        <img class="card-img-top" src="{{prod.get_photo_url}}" alt="card img">
+        <div class="card-body">
+        <h5 class="card-title"><a href="{{prod.get_absolute_url}}">{{prod.title|title}}</a><strong></strong></h5>
+        <p class="card-text">{{prod.description|truncatewords:5 }}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Price: ${{prod.price}}
+                {% if prod.sale %}
+                  <span class="badge badge-pill badge-success px-3"> Sale</span>
+                {% endif %}
+            </li>
+        </ul>
+</div>

@@ -1,0 +1,32 @@
+{% extends 'base.html'%}
+{% load staticfiles %}
+{% block title %}Payment iDeal{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col col-md-6">
+            <h2>Greet from iDEAL webhook</h2>
+            <p class="lead">
+                {% if order %}
+                   {% if order.is_open_payment %}
+                    "We have not received a definite payment status. You will receive an email as soon as we receive a confirmation of the bank/merchant."
+                   {% elif order.is_cancelled_order %}
+                    "You have cancelled your payment. Please complete your order with a different payment method."
+                   {% else %}
+                   {% blocktrans with number=order.number %}
+                   Your order has been placed and a confirmation email has been sent - your order number is
+                   <strong>{{ number }}</strong>.
+                   {% endblocktrans %}
+                   "Please make a note of this reference or print this page and quote it in any communication with us regarding your order.
+            {% endif %}
+           </p>
+           {% endif %}
+            <h3>Msg: {{msg}}</h3>
+
+        </div>
+    </div>
+    <hr>
+{% endblock content%}
+
+{% block js %}
+{% endblock js %}

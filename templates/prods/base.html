@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="row my-2">
+    <div class="col-4 ml-auto">
+        <form class="form my-2 my-lg-0" action="{ url 'search:simple-search'}">
+            <div class="input-group">
+                <input class="form-control" type="search"
+                        placeholder="Search"
+                        aria-label="Search"
+                        name='q'
+                        value={{request.GET.get.q}}>
+                <span  class="input-group-btn"><button class="btn btn-outline" type="submit">Search</button></span>
+            </div>
+        </form>
+    </div>
+
+</div>
+<div class="row mt-2">
+    <!-- here comes a space for products self -->
+    {% block sidebar%}
+    {% endblock sidebar %}
+
+    {% block product %}
+    {% endblock product %}
+</div>
+
+{% endblock content %}

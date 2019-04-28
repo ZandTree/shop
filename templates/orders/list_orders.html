@@ -1,0 +1,68 @@
+{% extends 'base.html'%}
+{% load staticfiles %}
+{% block title %}list of pre-orders{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    {% if orders %}
+
+    <table class="table table-striped">
+        <h3 class="text-center">Welcome by List of Pre-Orders</h3>
+        <caption> <i class='fas fa-info-circle' style='color:red;'></i>  Order Cost exclusive shipping <br>
+            <i class='fas fa-info-circle' style='color:green;'></i> Order Cost inclusive shipping
+        </caption>
+  <thead>
+    <tr>
+      <th scope="row">User</th>
+      <th scope="col"># Id</th>
+      <th scope="col"># Generic Id</th>
+      <th scope="col">Status</th>
+      <th scope="col">Created</th>
+      <th scope="col">View Details</th>
+      <th scope="col">Order Total <i class='fas fa-info-circle' style='color:red;'></i></th>
+      <th scope="col">Shipping cost</th>
+      <th scope="col">Order Total <i class='fas fa-info-circle' style='color:green;'></i></th>
+      <th scope="col">Delete</th>
+      <th scope="col">Check It Out</th>
+    </tr>
+  </thead>
+  <tbody>
+      {% for order in orders %}
+      <tr class="tab_row-{{order.cart_id}}" >
+      <td scope="row">cart_user: {{order.cart_id}}</td>
+      <td scope="row">{{order.id}}</td>
+      <td scope="row">{{order.order_unid}}</td>
+      <td scope="row">{{order.status}}</td>
+      <td scope="row">{{order.date|date:"d-m-Y, H:i"}}</td>
+      <td scope="row"><a href="{% url 'orders:order-detail' order.order_unid %}">Details</a></td>
+      <td scope="row">$ {{order.cart.total}} </td>
+      <td scope="row">$ {{order.shipping_total}}</td>
+      <td scope="row">$ {{order.total}}</td>
+      <td>
+          <form class="remove-order" data-id={{order.cart_id}} action="{% url 'orders:delete-order' %}"  method="post">
+              <!-- {% url 'orders:list-orders' -->
+              {% csrf_token %}
+            <input type="number" name="pk" value="{{order.id}}" hidden>
+            <input type="submit"  class="btn custom-danger-btn" value="Delete">
+          </form>
+
+      </td>
+      <td>
+          <form action="{% url 'orders:checkout' %}"  method="get">
+              <!-- {% url 'orders:list-orders' -->
+              <!-- {% csrf_token  -->
+            <input type="number" name="pk" value="{{order.id}}" hidden>
+            <input type="submit"  class="btn custom-success-btn" value="CheckOut">
+          </form>
+
+      </td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <h2>No Current Orders</h2>
+    {% endif %}
+
+  </tbody>
+</table>
+<hr>
+</div>
+{% endblock %}

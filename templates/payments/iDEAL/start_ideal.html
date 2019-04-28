@@ -1,0 +1,43 @@
+{% extends 'base.html'%}
+{% load staticfiles %}
+{% block title %}Payment iDeal{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col col-md-6">
+            <h2>Try this one </h2>
+            <div class="col col-md-6">
+                <h2>Pay with iDeal</h2>
+
+            <form method="post" action="." >
+                {% csrf_token %}
+                <label>Select your bank</label>
+                <select name="issuer">
+                {% for issuer in list_bank.issuers %}
+
+                <option value="{{issuer.id}}">{{issuer.name}}</option>
+                {% endfor %}
+                <!-- <option value="">or select later</option> -->
+                </select>
+                <button type="submit" class = "btn btn-success btn-large">OK</button>
+            </form>
+            <hr>
+            <!-- <h3>Select your bank</h3>
+            <form method="post" action=".">
+                 csrf_token %}
+                for issuer in list_bank.issuers %}
+                <input type="image" src="issuer.image.svg}}">
+                endfor %}
+                <button type="submit" class = "btn btn-success">OK</button>
+            </form>-->
+
+            </div>
+        </div>
+
+    </div>
+    <hr>
+{% endblock content%}
+
+{% block js %}
+{% endblock js %}
+# test tr_yhDqrP9uyC

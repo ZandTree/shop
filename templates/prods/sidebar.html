@@ -1,0 +1,23 @@
+{% load static %}
+{% load mptt_tags %}
+<div class="col-md-2 text-center mt-2">
+    <div class="sidebar">
+        <div class="side" text-center>
+                <h2 >Categories</h2>
+                    <ul class="root dropdown">
+                        {% recursetree cats %}
+                            <div class="a-node">
+                                <a  class="dropdown-item"
+                                href="{% url 'prods:category' slug=node.slug %} ">{{node.name}}</a>
+
+
+                            {% if not node.is_leaf_node %}
+                                <div class="a-child children ">
+                                    <a href="#">{{children}}</a>
+                                </div>
+                                    {% endif %}
+                            </div>
+                        {% endrecursetree %}
+        </div>
+    </div>
+</div>

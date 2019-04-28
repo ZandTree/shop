@@ -1,0 +1,17 @@
+server {
+    listen 80;
+    server_name 188.166.71.144;
+
+    location /static {
+        alias /home/django/shop/static;
+    }
+    location /media {
+        alias /home/django/shop/media;
+    }
+    location / {
+        proxy_pass http://localhost:8000;
+        include /etc/nginx/proxy_params;
+        proxy_redirect off;
+    }
+
+}

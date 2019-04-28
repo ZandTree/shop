@@ -1,0 +1,25 @@
+{% extends 'base.html'%}
+{% load staticfiles %}
+{% load bootstrap4 %}
+{% block title %}Profile Delete{% endblock title %}
+{% block content %}
+<div class="container">
+
+<div class="row">
+    <div class="col-md-7">
+        <form class="" action="" method="post">
+            <h4>Do you really want to delete your account?</h4>
+
+            {% csrf_token %}
+            <button class="btn btn-danger" type="submit">Yes. Delete My Account.
+                <i class='fas fa-bolt' style='font-size:24px;color:black'></i></button>
+        </form>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col col-md-5"><i class='fas fa-chevron-circle-left' style='font-size:36px'></i>
+        <a href="{% url 'profiles:account-info' %}">Go back</a>
+    </div>
+</div>
+</div>
+{% endblock %}

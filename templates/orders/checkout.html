@@ -1,0 +1,52 @@
+{% extends 'prods/base.html'%}
+{% load staticfiles %}
+{% load bootstrap4 %}
+{% block title %}billing data{% endblock %}
+{% block content %}
+<div class="container-fluid my-3">
+    {% if messages %}
+        {% for msg in messages %}
+            <div class="alert alert-info" role="alert">
+                <button class="close" data-dismiss="alert">
+                <small><sup>X</sup></small>
+                </button>
+                <p>{{msg}}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Info about order with id: {{order.id}}</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-center"># Order Id</th>
+                        <th scope="col" class="text-center">Date Accepted</th>
+                        <th scope="col" class="text-center">Details</th>
+                        <th scope="col" class="text-center">Total (incl shipping)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr >
+                        <td class="text-center">{{order.order_unid}}</td>
+                        <td class="text-center">{{order.date}}</td>
+                        <td class="text-center"><a href="{% url 'orders:order-detail' order.id %}">View</a></td>
+                        <td class="text-center">${{order.total}} incl(${{order.shipping_total}})</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h2>Checking Billing Info</h2>
+            <form action="{% url 'profiles:adjust-profile' user.id %}" method="post">
+                {% csrf_token %}
+                 {% bootstrap_form form %}
+                <input type="submit" class="btn custom-success-btn"    value="Edit">
+            </form>
+        </div>
+
+
+    </div>
+</div>
+
+{% endblock content%}

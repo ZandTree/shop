@@ -1,0 +1,97 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+ <link rel="stylesheet" type="text/css" href="{% static 'css/admin.css' %}" />
+{% block title %}Order {{ order.id }}|{{block.super}} {% endblock %}
+ {% block breadcrumbs %}
+ <div class="breadcrumbs">
+ <a href="{% url 'admin:index' %}">Home</a> &rsaquo;
+ <a href="{% url 'admin:orders_order_change' order.id %}">Order {{order.id }}</a>&rsaquo; Detail
+ </div>
+ {% endblock %}
+
+{% block content %}
+<h1>Order {{ order.id }}</h1>
+<ul class="object-tools">
+ <li>
+ <a href="#" onclick="window.print();">Print order</a>
+ </li>
+</ul>
+<table>
+    <tr>
+        <th>Order</th>
+        <td>{{ order.order_id }}</td>
+    </tr>
+    <tr>
+         <th>Created</th>
+         <td>{{ order.date }}</td>
+     </tr>
+     <tr>
+         <th>Customer</th>
+         <td>{{cart.user}}</td>
+     </tr>
+     <tr>
+         <th>E-mail</th>
+         <td><a href="mailto:{{ cart.user.email }}" target="_blank">{{ cart.user.email }}</a></td>
+     </tr>
+    <tr>
+        <th>Address</th>
+        <td>{{ cart.user.profile.last_name }}, {{ cart.user.profile.city }} {{ cart.user.profile.street}}</td>
+    </tr>
+    <tr>
+        <th>Amount of products</th>
+        <td> {{ cart.cart_items.count }}</td>
+    </tr>
+     <tr>
+         <th>Amount of products pieces</th>
+         <td> {{ cart.get_sum_items_amount }}</td>
+     </tr>
+     <tr>
+         <th>Total price (excl shipping)</th>
+         <td>$ {{ cart.get_sum_items_price }}</td>
+     </tr>
+     <tr>
+         <th>Shipping cost</th>
+         <td>$ {{ order.shipping_total }}</td>
+     </tr>
+     <tr>
+         <th>Total amount (incl shipping)</th>
+         <td>$ {{ order.total }}</td>
+     </tr>
+    <tr>
+        <th>Status</th>
+        <td>{{order.get_status_display }}</td>
+    </tr>
+</table >
+<div class="module" id="ord-admin">
+     <div class="tabular inline-related last-related">
+         <table>
+             <h2>Items bought</h2>
+             <thead>
+                 <tr>
+                     <th>Product</th>
+                     <th>Price</th>
+                     <th>Qty</th>
+                     <th>Subtotal</th>
+                     <th>Total</th>
+                 </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr class="row"> {#{% cycle '1' '2' %}"#}
+                    <td>{{item.product}}</td>
+                    <td class="num">$ {{item.product.price}}</td>
+                    <td class="num">{{item.qty}} </td>
+                    <td class="num">$ {{item.sub_total}}</td>
+                    <td class="num"></td>
+                </tr>
+                {% endfor %}
+                <tr class="total">
+                    <td colspan="4">Total</td>
+                    <td class="num">$ {{order.total}}</td>
+                </tr>
+            </tbody>
+         </table>
+
+     </div>
+</div>
+{% endblock %}

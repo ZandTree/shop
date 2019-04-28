@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>report</title>
+        <style media="screen">
+            body{background: #f7f7f7;}
+        </style>
+    </head>
+    <body>
+        <h1>Ecommers calling</h1>
+        <p>
+            Invoice no. order.order_id <br>
+            <span class="secondary">order.created|date:"M d,Y"</span>
+        </p>
+        <h3>Bill to</h3>
+        <p>
+            order.first_name  order.lastname <br>
+            order.email
+            order.address
+            order.postcode,order.city
+        </p>
+        <h3>Items bougth</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%  for item in orders%}
+
+                <tr class="row{% cycle '1' '2'%}">
+                    <td>{{item}}</td>
+                    <td class ="num">$item.price</td>
+                    <td class="num">item.qty</td>
+                    <td class="num">$item.total</td>
+                </tr>
+                {% endfor %}
+                <tr class="total">
+                    <td colspan="3">Total</td>
+                    <td class="num">$order.total</td>
+
+                </tr>
+            </tbody>
+        </table>
+        <span class="{% if order.paid%}paid{%else%}pending{%endif%}">
+
+        </span>
+
+    </body>
+</html>

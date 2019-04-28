@@ -1,0 +1,86 @@
+{% extends 'prods/base.html'%}
+{% block title %}Product Detail{% endblock title %}
+{% block product %}
+<div class="container">
+    {% if messages %}
+        {% for msg in messages %}
+            <div class="alert alert-info" role="alert">
+                <button class="close" data-dismiss="alert">
+                <small><sup>X</sup></small>
+                </button>
+                <p>{{msg}}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="row">
+        <div class="col-md-6 py-3">
+            <div class="card">
+            <!-- <img src="product.photo.url" alt="ku-ku"> -->
+            <img class="card-img-top img-fluid"
+                    src="{{product.get_photo_url}}"
+                    alt="Card image cap">
+                    <!-- style='width:14rem;' -->
+
+              <div class="card-body">
+                <h5 class="card-title">{{product|title}}</h5>
+                <p class="card-text">{{product.description}}</p>
+              </div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Price:${{product.price}}</li>
+                {% if product.sale %}
+                <li class="list-group-item">On Sale!</li>
+                {% endif %}
+                <li class="list-group-item">
+                    <div class="row">
+                            <div class="col-md-6 mx-auto">
+                                <a id="add-to-cart" href="{% url 'prods:add-to-cart' product.slug product.id %}">
+                                <button class="btn btn-success ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                    </svg>
+                                    Add To Cart
+                                </button>
+                                </a>
+                            </div>
+                    </div> <!--end div row-->
+               </li>
+               <li class="list-group-item">
+                     <div class="row">
+                         <div id="msg" class="col-md-12">
+                         </div>
+                     </div>
+                </li>
+                <li class="list-group-item">
+                      <div class="row">
+                          <div class="col-md-6 ">
+                                  <a href="{% url 'prods:home' %}">Go On Shopping</a>
+                          </div>
+                          <div class="col-md-6 ">
+                                  <a href="{% url 'prods:cart' %}">Go To Your Card</a>
+                          </div>
+                      </div>
+                 </li>
+
+              </ul>
+        </div>
+    </div>
+</div>
+{% endblock product %}
+
+{% block js %}
+<script>
+    $("#add-to-cart").on('click',function(e){
+        e.preventDefault();
+        url= $(this).attr('href');
+        $.get(url,function(response){
+            var flag = response.flag;
+            if(flag){
+                $("#msg").html('This product is already in your cart');
+            }else{
+                $("#cart_total").text(response.numItems);
+                $("#msg").html('new product added to your cart');
+            }
+        })
+    });
+
+</script>
+{% endblock %}

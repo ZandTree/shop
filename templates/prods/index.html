@@ -1,0 +1,39 @@
+{% extends 'prods/base.html'%}
+{% load staticfiles %}
+{% block title %}Home Page{% endblock title %}
+{% load bootstrap4 %}
+
+{% block sidebar%}
+    {% include 'prods/sidebar.html'%}
+{% endblock sidebar %}
+
+{% block product %}
+<div class="col-md-10 col-md-push-2">
+    <div class="container ">
+        <!-- div= row cards -->
+        <div class="row">
+            {% if products %}
+            {% for prod in products %}
+            <div class="col-md-4 py-3">
+                {{forloop.counter}}
+                {% include 'extra/prod_card.html' with prod=prod %}
+                {% if forloop.counter|divisibleby:3 %}
+                </div></div>
+                <div class="row">
+                    <div class="col-12"><hr></div>
+                {% else %}
+                </div>
+                {% endif %}
+            {% endfor %}
+            {% else %}
+            <div class="container">
+                <p>No products</p>
+            </div>
+            {% endif %}
+            </div>
+        <hr>
+        <div class="row">
+             {% bootstrap_pagination page_obj %}
+        </div>
+    </div>
+{% endblock %}

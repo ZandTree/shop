@@ -1,0 +1,76 @@
+{% extends 'base.html'%}
+{% load staticfiles %}
+{% load bootstrap4 %}
+{% block title %}Account Overview{% endblock title %}
+{% block content %}
+<div class="container-fluid">
+    {% if messages %}
+        {% for msg in messages %}
+            <div class="alert alert-info" role="alert">
+                <button class="close" data-dismiss="alert">
+                <small><sup>X</sup></small>
+                </button>
+                <p>{{msg}}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+<div class="row my-2">
+    <div class="col col-md-2">
+    </div>
+    <div class="col col-md-4">
+        <div class="list-group contact-info">
+          <button type="button" class="list-group-item list-group-item-action active account">
+            <h4>Support</h4>
+          </button>
+          <button type="button" class="list-group-item list-group-item-action">
+              <i class='fas fa-phone' style='font-size:24px;color:green'></i>
+               <strong><p>Telefoon (vaste lijn): 31(010)12-34-56</p></strong>
+          </button>
+          <button type="button" class="list-group-item list-group-item-action">
+              <i class='fas fa-mobile-alt' style='font-size:24px;color:brown'></i>
+               <strong><p>Mobiel nummer: 06-1234567</p></strong>
+          </button>
+
+          <button type="button" class="list-group-item list-group-item-action">
+               <strong>Email: {{email|urlize}}</strong>
+          </button>
+          <button type="button" class="list-group-item list-group-item-action" >
+              <span class="glyphicon">&#x2709;</span>
+              <strong><p>Nice-Idea-House@Co</p></strong>
+              <strong><p>Straat xx 1234AB</p></strong>
+              <strong><p>'Dam</p></strong>
+              <strong><p>NL</p></strong>
+
+          </button>
+    </div>
+
+    </div>
+    <div class="col col-md-1">
+
+    </div>
+    <div class="col-md-3 ">
+        <div class="list-group">
+          <button type="button" class="list-group-item list-group-item-action active account">
+            <h4>Account detail</h4>
+          </button>
+          <button type="button" class="list-group-item list-group-item-action">
+              <strong>
+              <p><a href="{% url 'profiles:profile-info' user.id %}">Change your profile detail</a></p></strong>
+          </button>
+          <button type="button" class="list-group-item list-group-item-action">
+              <strong><p><a href="{% url 'account_change_password' %}">Change your password</a></p></strong>
+          </button>
+          <button type="button" class="list-group-item list-group-item-action">
+              <strong><p><a href="{% url 'profiles:account-delete' user.profile.id %}">Delete account</a></p></strong>
+          </button>
+    </div>
+    </div>
+    <div class="col col-md-1">
+
+    </div>
+</div>
+<hr>
+
+</div> <!--end div container-->
+
+{% endblock %}

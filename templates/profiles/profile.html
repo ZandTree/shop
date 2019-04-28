@@ -1,0 +1,28 @@
+{% extends 'base.html'%}
+{% load staticfiles %}
+{% load bootstrap4 %}
+{% block title %}Profile{% endblock title %}
+{% block content %}
+<div class="container">
+    {% include 'extra/msg.html'%}
+<div class="row">
+    <div class="col-md-8">
+        <h4>Billing Profile</h4>
+        <p>Please update your billing profile</p>
+        <form class="" action="" method="post">
+            {% csrf_token %}
+             {% bootstrap_form form %}
+            <input type="submit" class="btn custom-success-btn"    value="Edit">
+        </form>
+    </div>
+</div>
+<hr>
+<div class="row mt-3">
+    <div class="col col-md-5"><i class='fas fa-chevron-circle-left' style='font-size:36px'></i>
+        <a href="{% url 'profiles:account-info' %}">Go back To Account</a>
+    </div>
+</div>
+
+</div> <!--end div container-->
+
+{% endblock %}

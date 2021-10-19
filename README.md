@@ -6,4 +6,4 @@
 
 3. Stripe (sandbox)
 
-4. Ideal payment (not conpleted)
+4. Ideal payment (not completed)
